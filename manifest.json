@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Wordle Solver",
+  "version": "1.0",
+  "description": "Dumme Scheiße",
+  "action": {
+    "default_popup": "hello.html"
+  },
+  "permissions": ["scripting"],
+  "host_permissions": ["https://wordledeutsch.org/"]
+}
