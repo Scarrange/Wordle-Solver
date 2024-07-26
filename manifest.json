@@ -7,5 +7,15 @@
     "default_popup": "hello.html"
   },
   "permissions": ["scripting"],
-  "host_permissions": ["https://wordledeutsch.org/"]
+  "host_permissions": ["https://wordledeutsch.org/"],
+  "web_accessible_resources": [
+    {
+      "resources": ["/util/frequencies.json"],
+      "matches": ["https://wordledeutsch.org/*"]
+    },
+    {
+      "resources": ["/util/wordle_words.json"],
+      "matches": ["https://wordledeutsch.org/*"]
+    }
+  ]
 }

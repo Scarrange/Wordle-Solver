@@ -10,6 +10,7 @@ SOLUTION_LIST.forEach((word) => {
 const sortedObject = Object.fromEntries(
   Object.entries(wordCounts).sort((a, b) => b[1] - a[1])
 );
+console.log(`There are ${SOLUTION_LIST.length} solution words`);
 console.log("Sorted letters:\n", sortedObject);
 
 const tenLetters = Object.keys(sortedObject).slice(0, 10);
