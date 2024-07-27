@@ -38,7 +38,6 @@ const tryWord = async (word) => {
 
 const removeWord = (wordList, word) => {
   const index = wordList.indexOf(word);
-  console.log("index: ", index);
   if (index < 0) {
     return;
   }
@@ -58,6 +57,7 @@ const analyzeWord = (index) => {
     }
     if (tile.getAttribute("evaluation") === "present") {
       checks.push(new RegExp(tile.getAttribute("letter")));
+      checks.push(createRegex(`[^${tile.getAttribute("letter")}]`, index));
     }
     if (tile.getAttribute("evaluation") === "absent") {
       checks.push(createRegex(`[^${tile.getAttribute("letter")}]`, index));
@@ -88,9 +88,9 @@ const main = async () => {
     takenGuesses.push(guess);
     removeWord(solutionWords, guess);
     checks.push(...analyzeWord(counter));
-    console.log("guesses taken: ", takenGuesses);
-    console.log("checks: ", checks);
     solutionWords = filterWords(solutionWords, checks);
+    console.log("guesses taken: ", takenGuesses.toString());
+    console.log("checks: ", checks.toString());
     console.log("solutionWords: ", solutionWords);
     counter++;
   }
@@ -101,11 +101,12 @@ const main = async () => {
     takenGuesses.push(guess);
     removeWord(solutionWords, guess);
     checks.push(...analyzeWord(counter));
-    console.log("guesses taken: ", takenGuesses);
-    console.log("checks: ", checks);
     solutionWords = filterWords(solutionWords, checks);
+    console.log("guesses taken: ", takenGuesses.toString());
+    console.log("checks: ", checks.toString());
     console.log("solutionWords: ", solutionWords);
     counter++;
   }
 };
 main();
+//TODO frequencie-score ausrechnen und danach auswählen
