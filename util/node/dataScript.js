@@ -1,6 +1,6 @@
 const fs = require("fs");
 const data = fs.readFileSync("../wordle_words.json", "utf-8");
-const SOLUTION_LIST = JSON.parse(data).SOLUTION_LIST;
+const SOLUTION_LIST = JSON.parse(data);
 let letterCounts = {};
 "abcdefghijklmnopqrstuvwxyz".split("").forEach((l) => (letterCounts[l] = 0));
 
