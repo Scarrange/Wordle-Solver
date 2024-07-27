@@ -13,6 +13,7 @@ const sortedObject = Object.fromEntries(
 );
 console.log(`There are ${SOLUTION_LIST.length} solution words`);
 console.log("Sorted letters:\n", sortedObject);
+
 fs.writeFile(
   "../frequencies.json",
   JSON.stringify(sortedObject),
@@ -23,6 +24,18 @@ fs.writeFile(
       return;
     }
     console.log("frequencies.json has been updated!");
+  }
+);
+fs.writeFile(
+  "../wordle_words.json",
+  JSON.stringify(SOLUTION_LIST.sort()),
+  "utf-8",
+  (err) => {
+    if (err) {
+      console.error("Error writing to file: ", err);
+      return;
+    }
+    console.log("wordle_words.json has been updated!");
   }
 );
 
