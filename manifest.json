@@ -1,11 +1,17 @@
 {
   "manifest_version": 3,
   "name": "Wordle Solver",
-  "version": "1.0",
-  "description": "Dumme Scheiße",
+  "version": "1.0.0",
+  "description": "Löst Wordle auf wordledeutsch.org",
   "action": {
-    "default_popup": "hello.html"
+    "default_popup": "main.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["https://wordledeutsch.org/*"],
+      "js": ["scripts/content.js"]
+    }
+  ],
   "permissions": ["scripting"],
   "host_permissions": ["https://wordledeutsch.org/"],
   "web_accessible_resources": [

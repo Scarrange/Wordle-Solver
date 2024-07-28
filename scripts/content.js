@@ -75,14 +75,12 @@ const filterWords = (allWords, checks) => {
 };
 
 const getWordScore = (frequencies, word) => {
-  const score = word.split("").reduce((acc, letter) => {
+  return word.split("").reduce((acc, letter) => {
     return acc + frequencies[letter];
   }, 0);
-  console.log("Word:", word, "Score:", score);
-  return score;
 };
 
-const main = async () => {
+const main = async (hardMode) => {
   const base = ["seoul", "train"];
   const takenGuesses = [];
   const checks = [];
@@ -91,17 +89,19 @@ const main = async () => {
   let solutionWords = await readFile("/util/wordle_words.json");
   let frequencies = await readFile("/util/frequencies.json");
 
-  while (counter < 2) {
-    guess = base[counter];
-    await tryWord(guess);
-    takenGuesses.push(guess);
-    removeWord(solutionWords, guess);
-    checks.push(...analyzeWord(counter));
-    solutionWords = filterWords(solutionWords, checks);
-    console.log("guesses taken: ", takenGuesses.toString());
-    console.log("checks: ", checks.toString());
-    console.log("solutionWords: ", solutionWords);
-    counter++;
+  if (!hardMode) {
+    while (counter < 2) {
+      guess = base[counter];
+      await tryWord(guess);
+      takenGuesses.push(guess);
+      removeWord(solutionWords, guess);
+      checks.push(...analyzeWord(counter));
+      solutionWords = filterWords(solutionWords, checks);
+      console.log("guesses taken: ", takenGuesses.toString());
+      console.log("checks: ", checks.toString());
+      console.log("solutionWords: ", solutionWords);
+      counter++;
+    }
   }
 
   while (counter < 6) {
@@ -110,7 +110,15 @@ const main = async () => {
         (a, b) => getWordScore(frequencies, a) - getWordScore(frequencies, b)
       )
       .pop();
+    if (!guess) {
+      return;
+    }
+
     await tryWord(guess);
+    if (counter === 5) {
+      break;
+    }
+
     takenGuesses.push(guess);
     checks.push(...analyzeWord(counter));
     solutionWords = filterWords(solutionWords, checks);
@@ -120,5 +128,7 @@ const main = async () => {
     counter++;
   }
 };
-main();
-//TODO frequencie-score ausrechnen und danach auswählen
+
+chrome.runtime.onMessage.addListener((message) => {
+  main(message.hardMode);
+});
