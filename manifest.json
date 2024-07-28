@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Löst Wordle auf wordledeutsch.org",
   "action": {
-    "default_popup": "main.html"
+    "default_popup": "main.html",
+    "default_title": "Wordle Solver"
   },
   "content_scripts": [
     {
