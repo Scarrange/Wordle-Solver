@@ -28,7 +28,7 @@ const sendKey = (key) => {
 };
 
 const tryWord = async (word) => {
-  console.log("Word:", word);
+  console.log("Trying word:", word);
   word.split("").forEach((letter) => {
     sendKey(letter);
   });
@@ -74,6 +74,14 @@ const filterWords = (allWords, checks) => {
   });
 };
 
+const getWordScore = (frequencies, word) => {
+  const score = word.split("").reduce((acc, letter) => {
+    return acc + frequencies[letter];
+  }, 0);
+  console.log("Word:", word, "Score:", score);
+  return score;
+};
+
 const main = async () => {
   const base = ["seoul", "train"];
   const takenGuesses = [];
@@ -81,6 +89,7 @@ const main = async () => {
   let counter = 0;
   let guess = "";
   let solutionWords = await readFile("/util/wordle_words.json");
+  let frequencies = await readFile("/util/frequencies.json");
 
   while (counter < 2) {
     guess = base[counter];
@@ -96,10 +105,13 @@ const main = async () => {
   }
 
   while (counter < 6) {
-    guess = solutionWords[0];
+    guess = solutionWords
+      .sort(
+        (a, b) => getWordScore(frequencies, a) - getWordScore(frequencies, b)
+      )
+      .pop();
     await tryWord(guess);
     takenGuesses.push(guess);
-    removeWord(solutionWords, guess);
     checks.push(...analyzeWord(counter));
     solutionWords = filterWords(solutionWords, checks);
     console.log("guesses taken: ", takenGuesses.toString());
